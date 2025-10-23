@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CreditCare – AI-Powered Default Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <div class="brand">
+          <div class="logo-container">
+            <div class="logo">💳</div>
+          </div>
+          <div class="brand-text">
+            <h1>CreditCare AI</h1>
+            <p>ML-Powered Risk & Default Predictor</p>
+          </div>
+        </div>
+        <nav>
+          <a href="#" class="nav-link"><span>Dashboard</span></a>
+          <a href="#" class="nav-link"><span>Model Info</span></a>
+          <a href="#" class="nav-link"><span>Documentation</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="grid">
+        <!-- Input Form Card -->
+        <section class="card">
+          <div class="hero">
+            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400" 
+                 alt="Credit Card Analysis" 
+                 class="hero-image"
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect fill=%22%238b5cf6%22 width=%22120%22 height=%22120%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2248%22%3E💳%3C/text%3E%3C/svg%3E'">
+            <div class="hero-content">
+              <h2>Credit Default Risk Analysis</h2>
+              <p>Enter client financial data to predict default probability using our RandomForest ML model trained on 30,000+ credit profiles.</p>
+            </div>
+          </div>
+
+          <form id="predict-form">
+            <div class="section-title">Client Information</div>
+            <label>
+              Credit Limit
+              <input name="LIMIT_BAL" type="number" value="20000" placeholder="Enter amount">
+            </label>
+            <label>
+              Age
+              <input name="AGE" type="number" value="30" placeholder="Years">
+            </label>
+            <label>
+              Sex (1=M, 2=F)
+              <input name="SEX" type="number" value="1" min="1" max="2">
+            </label>
+            <label>
+              Education Level
+              <input name="EDUCATION" type="number" value="2" min="1" max="4">
+            </label>
+            <label>
+              Marital Status
+              <input name="MARRIAGE" type="number" value="1" min="1" max="3">
+            </label>
+
+            <div class="section-title">Payment History (Last 6 Months)</div>
+            <label>September <input name="PAY_0" type="number" value="0"></label>
+            <label>August <input name="PAY_2" type="number" value="0"></label>
+            <label>July <input name="PAY_3" type="number" value="0"></label>
+            <label>June <input name="PAY_4" type="number" value="0"></label>
+            <label>May <input name="PAY_5" type="number" value="0"></label>
+            <label>April <input name="PAY_6" type="number" value="0"></label>
+
+            <div class="section-title">Bill Statements</div>
+            <label>September <input name="BILL_AMT1" type="number" value="3913"></label>
+            <label>August <input name="BILL_AMT2" type="number" value="3102"></label>
+            <label>July <input name="BILL_AMT3" type="number" value="689"></label>
+            <label>June <input name="BILL_AMT4" type="number" value="0"></label>
+            <label>May <input name="BILL_AMT5" type="number" value="0"></label>
+            <label>April <input name="BILL_AMT6" type="number" value="0"></label>
+
+            <div class="section-title">Payment Amounts</div>
+            <label>September <input name="PAY_AMT1" type="number" value="0"></label>
+            <label>August <input name="PAY_AMT2" type="number" value="689"></label>
+            <label>July <input name="PAY_AMT3" type="number" value="0"></label>
+            <label>June <input name="PAY_AMT4" type="number" value="0"></label>
+            <label>May <input name="PAY_AMT5" type="number" value="0"></label>
+            <label>April <input name="PAY_AMT6" type="number" value="0"></label>
+
+            <button type="button" id="predict-btn" class="btn btn-primary">
+              <span>🎯 Analyze Risk Profile</span>
+            </button>
+          </form>
+        </section>
+
+        <!-- Results Card -->
+        <aside class="card result-card">
+          <div class="result-header">
+            <div>
+              <h3>Risk Assessment</h3>
+              <p class="muted">Default probability next month</p>
+            </div>
+            <span class="model-badge">RF v1.1</span>
+          </div>
+
+          <div class="probability-display">
+            <div id="prob-text" class="prob-value">—</div>
+            <p class="muted" style="margin-top: 0.5rem;">Default Probability</p>
+          </div>
+
+          <div class="meter-container">
+            <div class="meter">
+              <div id="meter-bar" class="meter-bar"></div>
+            </div>
+          </div>
+
+          <div id="class-label" style="text-align: center;">—</div>
+
+          <div id="explain" class="explanation">
+            Enter client data and click "Analyze Risk Profile" to generate a prediction with ML-powered insights.
+          </div>
+
+          <div class="action-buttons">
+            <button id="example-btn" class="btn btn-secondary">📋 Load Example</button>
+            <button id="reset-btn" class="btn btn-secondary">🔄 Reset Form</button>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Info Sections -->
+      <div class="info-sections">
+        <div class="info-card">
+          <h4>🤖 Model Architecture</h4>
+          <p>Random Forest classifier with 100 trees, trained on UCI Credit Card Default dataset. Achieves 82% accuracy with SHAP-based feature importance analysis.</p>
+        </div>
+        <div class="info-card">
+          <h4>📊 Dataset</h4>
+          <p>30,000 credit card clients from Taiwan (2005). Features include demographics, payment history, bill statements, and payment amounts over 6 months.</p>
+        </div>
+        <div class="info-card">
+          <h4>⚠️ Disclaimer</h4>
+          <p>This is a demo tool for educational purposes. Production use requires model calibration, regulatory compliance, and ongoing monitoring.</p>
+        </div>
+      </div>
+
+      <footer>
+        <p>Built with <span>❤️</span> by Gourav Kumar Ojha</p>
+        <p class="muted" style="margin-top: 0.5rem;">CreditCare AI © 2025 - All rights reserved</p>
+      </footer>
+    </main>
+
+    <script src="/static/predict.js"></script>
+  </body>
+</html>
